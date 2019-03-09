@@ -1,0 +1,4 @@
+\babel@toc {brazil}{}
+\beamer@sectionintoc {1}{Trabalho}{2}{0}{1}
+\beamer@sectionintoc {2}{Refer\IeC {\^e}ncias}{9}{0}{2}
+\beamer@sectionintoc {3}{D\IeC {\'u}vidas}{10}{0}{3}
