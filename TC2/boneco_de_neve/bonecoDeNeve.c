@@ -1,13 +1,22 @@
-// Guilherme Xavier e Marcos Balatka
 // gcc snowman.c -lglut -lGL -lGLU -lm -o snowman && ./snowman
 
 #include <GL/glut.h>
 #include <stdio.h>
 // Rotation amounts  
 static GLfloat xRot = 0.0f;  
-static GLfloat yRot = 0.0f;  
+static GLfloat yRot = 0.0f;
+
+//cores do nariz
+GLfloat nariz_R = 1.0f;
+GLfloat nariz_G = 0.3f;
+GLfloat nariz_B = 0.3f;
+
 
 void desenhaBoca(GLUquadricObj *quad);
+
+void Mouse(int button, int state, int mouseX, int mouseY);
+
+void botoesRoupa(GLUquadricObj *quad);
 
 // Change viewing volume and viewport.  Called when window is resized  
 void ChangeSize(int w, int h){  
@@ -96,7 +105,6 @@ void SpecialKeys(int key, int x, int y){
 void RenderScene(void){  
 
     GLUquadricObj *pObj;    // Quadrica
-      
     // Limpa a janela e o buffer 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);  
   
@@ -132,13 +140,16 @@ void RenderScene(void){
 	gluSphere(pObj, 0.02f, 26, 13);  
 
 	// Nose  
-	glColor3f(1.0f, 0.3f, 0.3f);  
+	//glColor3f(1.0f, 0.3f, 0.3f);
+    glColor3f(nariz_R, nariz_G, nariz_B);  
 	glTranslatef(0.1f, -0.12f, 0.0f);  
-	gluCylinder(pObj, 0.04f, 0.0f, 0.3f, 26, 13);   
+	gluCylinder(pObj, 0.04f, 0.0f, 0.3f, 26, 13); 
 
     //Boca
     desenhaBoca(pObj);
+    botoesRoupa(pObj);
     //Termina de desenhar a cabeca
+
     glPopMatrix();
 
 	// Hat  
@@ -156,7 +167,7 @@ void RenderScene(void){
 	glTranslatef(0.0f, 0.0f, 0.40f);  
 	gluDisk(pObj, 0.0f, 0.17f, 26, 13);  
 	glPopMatrix();  
-          
+
     // Restore the matrix state  
     glPopMatrix();  
   
@@ -173,7 +184,10 @@ int main(int argc, char *argv[]){
     glutInitWindowSize(800, 600);  
     glutCreateWindow("Boneco de Neve - Quadricas");  
     glutReshapeFunc(ChangeSize);  
-    glutSpecialFunc(SpecialKeys);  
+    glutSpecialFunc(SpecialKeys);
+
+    glutMouseFunc(Mouse);
+
     glutDisplayFunc(RenderScene);  
     SetupRC();  
     glutMainLoop();  
@@ -206,5 +220,42 @@ void desenhaBoca(GLUquadricObj *quad){
 
     glTranslatef(0.05f, -0.01f, 0.0f); 
     gluSphere(quad, 0.02f, 26, 13);
+
+}
+
+void Mouse(int button, int state, int mouseX, int mouseY){
+    GLint hit;
+    if (button == GLUT_LEFT_BUTTON) {
+        printf("Botao esquerdo\n");
+        nariz_B = 0.0f;
+        nariz_G = 1.0f;
+        nariz_R = 0.0f;
+    }
+    else if(button == GLUT_MIDDLE_BUTTON) {
+        printf("Botao meio\n");
+    }
+
+    else if(button == GLUT_RIGHT_BUTTON) {
+        printf("Botao direito\n");
+    }
+    glutPostRedisplay();
+}
+
+void botoesRoupa(GLUquadricObj *quad){
+    //botoes roupa
+    glColor3f(0.0f, 0.0f, 0.0f); //preto
+    int i;
+
+    //for(i=0; i<4; i++){
+        glTranslatef(0.0f, -0.3f, 0.1f); 
+        gluSphere(quad, 0.04f, 26, 13);
+
+       // glTranslatef(0.0f, -0.3f, -0.020f);
+        glTranslatef(0.0f, -0.3f, -0.02f);
+        gluSphere(quad, 0.04f, 26, 13); 
+
+        glTranslatef(0.0f, -0.25f, 0.12f);
+        gluSphere(quad, 0.04f, 26, 13); 
+    //}
 
 }
