@@ -65,8 +65,11 @@ void display() {
    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear color and depth buffers
    glMatrixMode(GL_MODELVIEW);     // To operate on model-view matrix
 
+   desenhaChao();
+   
+   //glRotatef(xRot, 1.0f, 0.0f, 0.0f);  
+   //glRotatef(yRot, 0.0f, 1.0f, 0.0f);
 
-   //desenhaChao();
    GLUquadricObj *pObj = gluNewQuadric();  
    gluQuadricNormals(pObj, GLU_SMOOTH);
 
@@ -85,9 +88,52 @@ void display() {
    //torre esquerda - atras
    glColor3f(0.0f, 1.0f, 1.0f);
    desenhaTorre(pObj, -2.5f, 2.0f, -7.0f);
+   
+   //parede frontal 
+   glLoadIdentity();
+   glColor3f(1.0f, 0.5f, 0.0f);
+   glTranslatef(0.0f, -0.8f, 0.0f);
+   glBegin(GL_QUADS);
+        glVertex3f(1.5f, 0.0f, -7.0f);
+        glVertex3f(1.5f, 0.8f, -7.0f);
+        glVertex3f(-2.5f, 0.8f, -7.0f);
+        glVertex3f(-2.5f, 0.0f, -7.0f);
+   glEnd();
 
+   //parede fundos
+   glLoadIdentity();
+   glColor3f(1.0f, 0.0f, 1.0f);
+   glTranslatef(0.0f, -0.8f, 0.0f);
+   glBegin(GL_QUADS);
+        glVertex3f(1.5f, 2.0f, -7.0f);
+        glVertex3f(1.5f, 2.8f, -7.0f);
+        glVertex3f(-2.5f, 2.8f, -7.0f);
+        glVertex3f(-2.5f, 2.0f, -7.0f);
+   glEnd();
 
+    
+   //parede lateral direita
+   glLoadIdentity();
+   glColor3f(0.1f, 0.0f, 0.1f);
+   glTranslatef(0.0f, -0.8f, 0.0f);
+   glBegin(GL_QUADS);
+        glVertex3f(1.5f, 2.0f, -7.0f);
+        glVertex3f(1.5f, 2.8f, -7.0f);
+        glVertex3f(1.5f, 0.8f, -7.0f);
+        glVertex3f(1.5f, 0.0f, -7.0f);
+   glEnd();
 
+   //parede lateral esquerda
+   glLoadIdentity();
+   glColor3f(0.1f, 0.0f, 0.1f);
+   glTranslatef(0.0f, -0.8f, 0.0f);
+   glBegin(GL_QUADS);
+        glVertex3f(-2.5f, 2.0f, -7.0f);
+        glVertex3f(-2.5f, 2.8f, -7.0f);
+        glVertex3f(-2.5f, 0.8f, -7.0f);
+        glVertex3f(-2.5f, 0.0f, -7.0f);
+   glEnd();
+   
    glutSwapBuffers();  // Swap the front and back frame buffers (double buffering)
 }
 
@@ -105,7 +151,10 @@ void reshape(GLsizei width, GLsizei height) {  // GLsizei for non-negative integ
    glLoadIdentity();             // Reset
    // Enable perspective projection with fovy, aspect, zNear and zFar
    //gluPerspective(45.0f, aspect, 0.1f, 100.0f);
-   gluPerspective(45.0f, aspect, 0.1f, 100.0f);
+   gluPerspective(45.0f, aspect, 1.0, 40.0);
+
+   glMatrixMode(GL_MODELVIEW);  
+   glLoadIdentity();  
 }
 
 /* Main function: GLUT runs as a console application starting at main() */
@@ -118,13 +167,14 @@ int main(int argc, char** argv) {
    //glutInitWindowPosition(50, 50); // Position the window's initial top-left corner
    glutInitWindowPosition(20, 20);
    glutCreateWindow(title);          // Create window with the given title
-   glutDisplayFunc(display);       // Register callback handler for window re-paint event
+   
    glutReshapeFunc(reshape);       // Register callback handler for window re-size event
    
    glutSpecialFunc(SpecialKeys);
 
    glutMouseFunc(Mouse);
-   
+
+   glutDisplayFunc(display);       // Register callback handler for window re-paint event
    
    initGL();                       // Our own OpenGL initialization
 
@@ -168,29 +218,58 @@ void desenhaChao(){
         desenhaTorre(pObj, -2.5f, 2.0f, -7.0f);
     */
     glLoadIdentity();
-    glColor3f(0.1f, 0.1f, 0.1f);
+    glColor3f(0.3f, 0.9f, 0.9f);
 
-    //glTranslatef(0.0f, -2.0f, 0.0f);
+    glTranslatef(0.0f, -1.0f, 0.0f);
     //glPolygonMode(GL_FRONT, GL_FILL);
     glBegin(GL_QUADS);
         /*
-        glVertex3f(1.5f, 2.0f, -7.0f); //torre direita - atras
-        glVertex3f(-2.5f, 2.0f, -7.0f); //torre esquerda - atras
-        glVertex3f(-2.5f, -0.8f, -7.0f); //torre esquerda - frente
-        glVertex3f(1.5f, -0.8f, -7.0f); //torre direita - frentre
+        glVertex3f(3.5f, 4.0f, -9.0f); //torre direita - atras
+        glVertex3f(-4.5f, 4.0f, -9.0f); //torre esquerda - atras
+        glVertex3f(-4.5f, -0.8f, -9.0f); //torre esquerda - frente
+        glVertex3f(3.5f, -0.8f, -9.0f); //torre direita - frentre
         */
-        glVertex3f(2.5f, 2.0f, -5.0f); //torre direita - atras
-        glVertex3f(-3.5f, 2.0f, -5.0f); //torre esquerda - atras
-        glVertex3f(-3.5f, 0.0f, -5.0f); //torre esquerda - frente
-        glVertex3f(2.5f, 0.0f, -5.0f); //torre direita - frentre
+
+        glVertex3f(2.5f, 3.0f, -8.0f); //torre direita - atras
+        glVertex3f(-3.5f, 3.0f, -8.0f); //torre esquerda - atras
+        glVertex3f(-3.5f, -0.8f, -8.0f); //torre esquerda - frente
+        glVertex3f(2.5f, -0.8f, -8.0f); //torre direita - frentre
+        /*
+           //torre direita - frentre
+             glColor3f(1.0f, 0.0f, 0.0f);
+             desenhaTorre(pObj, 1.5f, 0.0f, -7.0f);
+
+           //torre esquerda - frente
+             glColor3f(0.0f, 1.0f, 0.0f);
+             desenhaTorre(pObj, -2.5f, 0.0f, -7.0f);
+
+           //torre direita - atras
+             glColor3f(0.0f, 0.0f, 1.0f);
+             desenhaTorre(pObj, 1.5f, 2.0f, -7.0f);
+
+           //torre esquerda - atras
+             glColor3f(0.0f, 1.0f, 1.0f);
+            desenhaTorre(pObj, -2.5f, 2.0f, -7.0f);
+            */
     glEnd();
 
     glutSwapBuffers();
 }
 
+/*
 void desenhaParede(){
+    glLoadIdentity();
 
+    glColor3f(0.1f, 0.1f, 0.1f);
+
+    glBegin(GL_QUADS);
+        glVertex3f();
+        glVertex3f();
+        glVertex3f();
+        glVertex3f();
+    glEnd();
 }
+*/
 void SpecialKeys(int key, int x, int y){  
 
     if(key == GLUT_KEY_UP)  
