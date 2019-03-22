@@ -1,8 +1,8 @@
 all: bonecoDeNeve
 
-tc2_CGR:
-	gcc -lGL -lGLU -lglut bonecoDeNeve.c -o bonecoDeNeve
-
+bonecoDeNeve: bonecoDeNeve.c
+	gcc -lGL -lGLU -lm -lglut bonecoDeNeve.c -o bonecoDeNeve
+	
 .PHONY: clean mrproper
 
 clear: 

@@ -244,18 +244,14 @@ void Mouse(int button, int state, int mouseX, int mouseY){
 void botoesRoupa(GLUquadricObj *quad){
     //botoes roupa
     glColor3f(0.0f, 0.0f, 0.0f); //preto
-    int i;
 
-    //for(i=0; i<4; i++){
-        glTranslatef(0.0f, -0.3f, 0.1f); 
-        gluSphere(quad, 0.04f, 26, 13);
+    glTranslatef(0.0f, -0.3f, 0.1f); 
+    gluSphere(quad, 0.04f, 26, 13);
 
-       // glTranslatef(0.0f, -0.3f, -0.020f);
-        glTranslatef(0.0f, -0.3f, -0.02f);
-        gluSphere(quad, 0.04f, 26, 13); 
+    glTranslatef(0.0f, -0.3f, -0.02f);
+    gluSphere(quad, 0.04f, 26, 13); 
 
-        glTranslatef(0.0f, -0.25f, 0.12f);
-        gluSphere(quad, 0.04f, 26, 13); 
-    //}
+    glTranslatef(0.0f, -0.25f, 0.12f);
+    gluSphere(quad, 0.04f, 26, 13); 
 
 }
