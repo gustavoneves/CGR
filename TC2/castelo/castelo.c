@@ -217,7 +217,57 @@ void RenderScene(void){
     glutSolidCube(1.0f);
     glPopMatrix();
 
+
+    //interior portao frente
+    glPushMatrix();
+    glTranslatef(0.0, -0.1f, 0.4f);
+    glColor3f(0.0f, 0.0f, 0.0f);
+    glScalef(0.5f, 0.5f, 0.6f);
+    glutSolidCube(1.0f);
     glPopMatrix();
+
+
+    //portao frente
+    glPushMatrix();
+    glTranslatef(0.0, -0.1f, 0.7f);
+    glColor3f(0.0f, 1.0f, 1.0f);
+    glScalef(0.7f, 0.5f, 1.1f);
+    glutSolidCube(1.0f);
+    glPopMatrix();
+
+    glPushMatrix();
+    glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
+    glTranslatef(0.0f, 1.6f, 0.1f);
+
+
+    glBegin(GL_TRIANGLES);    
+      glColor3f(0.5f, 0.0f, 0.0f);
+      // triangulo frente
+      glVertex3f( 0.0f, 0.05f, 0.0f);
+      glVertex3f(-0.35f, -0.35f, 0.25f);
+      glVertex3f(0.35f, -0.35f, 0.25f);
+ 
+      // triangulo direita
+      glVertex3f( 0.0f, 0.05f, 0.0f);
+      glVertex3f(0.35f, -0.35f, 0.25f);
+      glVertex3f(0.35f, -0.35f, -0.25f);
+
+      // triangulo atras
+      glVertex3f( 0.0f, 0.05f, 0.0f);
+      glVertex3f(0.35f, -0.35f, -0.25f);
+      glVertex3f(-0.35f, -0.35f, -0.25f);
+
+      // triangulo esquerda
+      glVertex3f( 0.0f, 0.05f, 0.0f);
+      glVertex3f(-0.35f,-0.35f,-0.25f);
+      glVertex3f(-0.35f,-0.35f, 0.25f);
+    glEnd();
+    glPopMatrix();
+
+
+
+
+    glPopMatrix(); // rotacao -90 em x
 
     glPopMatrix();
     // Buffer swap //chama o glFlush implicitamente 
@@ -263,12 +313,10 @@ void Mouse(int button, int state, int mouseX, int mouseY){
 
 void desenhaTorre(GLUquadricObj *quad, GLfloat x, GLfloat y, GLfloat z){
 
-    glTranslatef(x, y, z);
-
-    gluCylinder(quad, 0.3f, 0.0f, 0.5f, 26, 13);
-     
-    glTranslatef(0.0f, 0.0f, -0.8f);
-    gluCylinder(quad, 0.3f, 0.3f, 0.8f, 26, 13);
+    glTranslatef(x, y, z-0.8f);
+    gluCylinder(quad, 0.3f, 0.3f, 1.1f, 26, 13);
+    glTranslatef(0.0f, 0.0f, 1.0f);
+    gluCylinder(quad, 0.4f, 0.0f, 0.5f, 26, 13);
 
 }
 
