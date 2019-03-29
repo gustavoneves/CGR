@@ -1,6 +1,6 @@
 all: castelo
 
-tc2_CGR:
+castelo: castelo.c
 	gcc -lGL -lGLU -lglut castelo.c -o castelo
 
 .PHONY: clean mrproper

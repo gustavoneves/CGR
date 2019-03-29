@@ -1,34 +1,44 @@
 #include <GL/glut.h>
 #include <stdio.h>
-
-char title[] = "3D Shapes";
-
+// Rotation amounts  
 static GLfloat xRot = 0.0f;  
 static GLfloat yRot = 0.0f;
 
- 
 void desenhaTorre(GLUquadricObj *quad, GLfloat x, GLfloat y, GLfloat z);
 
 void Mouse(int button, int state, int mouseX, int mouseY);
 
-void SpecialKeys(int key, int x, int y);
-
 void desenhaChao();
-/* Initialize OpenGL Graphics */
 
-/*
-void initGL() {
-   glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // Set background color to black and opaque
-   glClearDepth(1.0f);                   // Set background depth to farthest
-   glEnable(GL_DEPTH_TEST);   // Enable depth testing for z-culling
-   glDepthFunc(GL_LEQUAL);    // Set the type of depth-test
-   glShadeModel(GL_SMOOTH);   // Enable smooth shading
-   glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);  // Nice perspective corrections
-}
-
+// Change viewing volume and viewport.  Called when window is resized  
+void ChangeSize(int w, int h){  
+    GLfloat fAspect;  
+  
+    // Prevent a divide by zero  
+    if(h == 0)  
+        h = 1;  
+  
+    // Set Viewport to window dimensions  
+    glViewport(0, 0, w, h);  
+  
+    fAspect = (GLfloat)w/(GLfloat)h;  
+  
+    // Reset coordinate system  
+    glMatrixMode(GL_PROJECTION);  
+    glLoadIdentity();  
+  
+    // Produce the perspective projection  
+    gluPerspective(35.0f, fAspect, 1.0, 40.0);   
+  
+    glMatrixMode(GL_MODELVIEW);  
+    glLoadIdentity();  
+}  
+  
+  
+// This function does any needed initialization on the rendering context.
+//  Here it sets up and initializes the lighting for the scene.  
 void SetupRC(){  
-*/
-void initGL() {
+
     // Light values and coordinates  
     GLfloat  whiteLight[] = { 0.05f, 0.05f, 0.05f, 1.0f };  
     GLfloat  sourceLight[] = { 0.25f, 0.25f, 0.25f, 1.0f };  
@@ -55,221 +65,10 @@ void initGL() {
     glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);  
   
     // Black blue background  
-    glClearColor(0.25f, 0.25f, 0.50f, 1.0f);  
-
+    glClearColor(0.25f, 0.25f, 0.50f, 1.0f);
 }  
-
-/* Handler for window-repaint event. Called back when the window first appears and
-   whenever the window needs to be re-painted. */
-void display() {
-   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear color and depth buffers
-   glMatrixMode(GL_MODELVIEW);     // To operate on model-view matrix
-
-   desenhaChao();
-   
-   //glRotatef(xRot, 1.0f, 0.0f, 0.0f);  
-   //glRotatef(yRot, 0.0f, 1.0f, 0.0f);
-
-   GLUquadricObj *pObj = gluNewQuadric();  
-   gluQuadricNormals(pObj, GLU_SMOOTH);
-
-   //torre direita - frentre
-   glColor3f(1.0f, 0.0f, 0.0f);
-   desenhaTorre(pObj, 1.5f, 0.0f, -7.0f);
-
-   //torre esquerda - frente
-   glColor3f(0.0f, 1.0f, 0.0f);
-   desenhaTorre(pObj, -2.5f, 0.0f, -7.0f);
-
-   //torre direita - atras
-   glColor3f(0.0f, 0.0f, 1.0f);
-   desenhaTorre(pObj, 1.5f, 2.0f, -7.0f);
-
-   //torre esquerda - atras
-   glColor3f(0.0f, 1.0f, 1.0f);
-   desenhaTorre(pObj, -2.5f, 2.0f, -7.0f);
-   
-   //parede frontal 
-   glLoadIdentity();
-   glColor3f(1.0f, 0.5f, 0.0f);
-   glTranslatef(0.0f, -0.8f, 0.0f);
-   glBegin(GL_QUADS);
-        glVertex3f(1.5f, 0.0f, -7.0f);
-        glVertex3f(1.5f, 0.8f, -7.0f);
-        glVertex3f(-2.5f, 0.8f, -7.0f);
-        glVertex3f(-2.5f, 0.0f, -7.0f);
-   glEnd();
-
-   //parede fundos
-   glLoadIdentity();
-   glColor3f(1.0f, 0.0f, 1.0f);
-   glTranslatef(0.0f, -0.8f, 0.0f);
-   glBegin(GL_QUADS);
-        glVertex3f(1.5f, 2.0f, -7.0f);
-        glVertex3f(1.5f, 2.8f, -7.0f);
-        glVertex3f(-2.5f, 2.8f, -7.0f);
-        glVertex3f(-2.5f, 2.0f, -7.0f);
-   glEnd();
-
-    
-   //parede lateral direita
-   glLoadIdentity();
-   glColor3f(0.1f, 0.0f, 0.1f);
-   glTranslatef(0.0f, -0.8f, 0.0f);
-   glBegin(GL_QUADS);
-        glVertex3f(1.5f, 2.0f, -7.0f);
-        glVertex3f(1.5f, 2.8f, -7.0f);
-        glVertex3f(1.5f, 0.8f, -7.0f);
-        glVertex3f(1.5f, 0.0f, -7.0f);
-   glEnd();
-
-   //parede lateral esquerda
-   glLoadIdentity();
-   glColor3f(0.1f, 0.0f, 0.1f);
-   glTranslatef(0.0f, -0.8f, 0.0f);
-   glBegin(GL_QUADS);
-        glVertex3f(-2.5f, 2.0f, -7.0f);
-        glVertex3f(-2.5f, 2.8f, -7.0f);
-        glVertex3f(-2.5f, 0.8f, -7.0f);
-        glVertex3f(-2.5f, 0.0f, -7.0f);
-   glEnd();
-   
-   glutSwapBuffers();  // Swap the front and back frame buffers (double buffering)
-}
-
-
-void reshape(GLsizei width, GLsizei height) {  // GLsizei for non-negative integer
-   // Compute aspect ratio of the new window
-   if (height == 0) height = 1;                // To prevent divide by 0
-   GLfloat aspect = (GLfloat)width / (GLfloat)height;
- 
-   // Set the viewport to cover the new window
-   glViewport(0, 0, width, height);
- 
-   // Set the aspect ratio of the clipping volume to match the viewport
-   glMatrixMode(GL_PROJECTION);  // To operate on the Projection matrix
-   glLoadIdentity();             // Reset
-   // Enable perspective projection with fovy, aspect, zNear and zFar
-   //gluPerspective(45.0f, aspect, 0.1f, 100.0f);
-   gluPerspective(45.0f, aspect, 1.0, 40.0);
-
-   glMatrixMode(GL_MODELVIEW);  
-   glLoadIdentity();  
-}
-
-/* Main function: GLUT runs as a console application starting at main() */
-int main(int argc, char** argv) {
-   glutInit(&argc, argv);            // Initialize GLUT
-   //glutInitDisplayMode(GLUT_DOUBLE); // Enable double buffered mode
-   glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
-   //glutInitWindowSize(640, 480);   // Set the window's initial width & height
-   glutInitWindowSize(800, 600);
-   //glutInitWindowPosition(50, 50); // Position the window's initial top-left corner
-   glutInitWindowPosition(20, 20);
-   glutCreateWindow(title);          // Create window with the given title
-   
-   glutReshapeFunc(reshape);       // Register callback handler for window re-size event
-   
-   glutSpecialFunc(SpecialKeys);
-
-   glutMouseFunc(Mouse);
-
-   glutDisplayFunc(display);       // Register callback handler for window re-paint event
-   
-   initGL();                       // Our own OpenGL initialization
-
-
-
-   glutMainLoop();                 // Enter the infinite event-processing loop
-   return 0;
-}
-
-void desenhaTorre(GLUquadricObj *quad, GLfloat x, GLfloat y, GLfloat z){
-    
-    //glColor3f(1.0f, 0.0f, 0.0f); //vermelho
-
-    //glTranslatef(-3.0f, 3.0f, 2.0f);
-    glLoadIdentity();
-
-    glTranslatef(x, y, z);
-
-    glRotatef(-90, 1.0f, 0.0f, 0.0f);
-
-    gluCylinder(quad, 0.3f, 0.0f, 0.5f, 26, 13);
-     
-    glTranslatef(0.0f, 0.0f, -0.8f);
-    gluCylinder(quad, 0.3f, 0.3f, 0.8f, 26, 13);
-
-}
-
-void desenhaChao(){
-
-    /*
-        //torre direita - frentre
-        desenhaTorre(pObj, 1.5f, 0.0f, -7.0f);
-
-        //torre esquerda - frente
-        desenhaTorre(pObj, -2.5f, 0.0f, -7.0f);
-
-        //torre direita - atras
-        desenhaTorre(pObj, 1.5f, 2.0f, -7.0f);
-
-        //torre esquerda - atras
-        desenhaTorre(pObj, -2.5f, 2.0f, -7.0f);
-    */
-    glLoadIdentity();
-    glColor3f(0.3f, 0.9f, 0.9f);
-
-    glTranslatef(0.0f, -1.0f, 0.0f);
-    //glPolygonMode(GL_FRONT, GL_FILL);
-    glBegin(GL_QUADS);
-        /*
-        glVertex3f(3.5f, 4.0f, -9.0f); //torre direita - atras
-        glVertex3f(-4.5f, 4.0f, -9.0f); //torre esquerda - atras
-        glVertex3f(-4.5f, -0.8f, -9.0f); //torre esquerda - frente
-        glVertex3f(3.5f, -0.8f, -9.0f); //torre direita - frentre
-        */
-
-        glVertex3f(2.5f, 3.0f, -8.0f); //torre direita - atras
-        glVertex3f(-3.5f, 3.0f, -8.0f); //torre esquerda - atras
-        glVertex3f(-3.5f, -0.8f, -8.0f); //torre esquerda - frente
-        glVertex3f(2.5f, -0.8f, -8.0f); //torre direita - frentre
-        /*
-           //torre direita - frentre
-             glColor3f(1.0f, 0.0f, 0.0f);
-             desenhaTorre(pObj, 1.5f, 0.0f, -7.0f);
-
-           //torre esquerda - frente
-             glColor3f(0.0f, 1.0f, 0.0f);
-             desenhaTorre(pObj, -2.5f, 0.0f, -7.0f);
-
-           //torre direita - atras
-             glColor3f(0.0f, 0.0f, 1.0f);
-             desenhaTorre(pObj, 1.5f, 2.0f, -7.0f);
-
-           //torre esquerda - atras
-             glColor3f(0.0f, 1.0f, 1.0f);
-            desenhaTorre(pObj, -2.5f, 2.0f, -7.0f);
-            */
-    glEnd();
-
-    glutSwapBuffers();
-}
-
-/*
-void desenhaParede(){
-    glLoadIdentity();
-
-    glColor3f(0.1f, 0.1f, 0.1f);
-
-    glBegin(GL_QUADS);
-        glVertex3f();
-        glVertex3f();
-        glVertex3f();
-        glVertex3f();
-    glEnd();
-}
-*/
+  
+// Respond to arrow keys  
 void SpecialKeys(int key, int x, int y){  
 
     if(key == GLUT_KEY_UP)  
@@ -290,7 +89,161 @@ void SpecialKeys(int key, int x, int y){
     // Refresh the Window  
     glutPostRedisplay();  
 
-}
+}  
+  
+  
+// Desenhar a cena 
+void RenderScene(void){  
+    GLUquadricObj *pObj;    // Quadrica
+    // Limpa a janela e o buffer 
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);  
+  
+    // Sava matriz de estado e rotacoes
+    glPushMatrix();  
+
+	// Move object back and do in place rotation  
+	glTranslatef(0.0f, -1.0f, -5.0f); 
+	glRotatef(xRot, 1.0f, 0.0f, 0.0f);  
+	glRotatef(yRot, 0.0f, 1.0f, 0.0f);
+
+    pObj = gluNewQuadric();  
+    gluQuadricNormals(pObj, GLU_SMOOTH);
+
+    glPushMatrix(); 
+    glRotatef(-90.0f, 1.0f, 0.0f, 0.0f); // Z crescendo para cima da tela
+
+    //torre direita - frentre
+    glPushMatrix();
+    glColor3f(0.0f, 0.0f, 0.0f);  
+    desenhaTorre(pObj, 1.5f, 0.0f, 1.0f);
+    glPopMatrix();
+
+    //torre esquerda - frente
+    glPushMatrix();
+    glColor3f(0.0f, 1.0f, 0.0f);
+    desenhaTorre(pObj, -1.5f, 0.0f, 1.0f);
+    glPopMatrix();
+
+    //torre direita atras
+    glPushMatrix();
+    glColor3f(0.0f, 0.0f, 1.0f);
+    desenhaTorre(pObj, 1.5f, 3.0f, 1.0f);
+    glPopMatrix();
+
+    //torre esquerda atras
+    glPushMatrix();
+    glColor3f(1.0f, 0.0f, 0.0f);
+    desenhaTorre(pObj, -1.5f, 3.0f, 1.0f);
+    glPopMatrix();
+
+    //Desenha o chao
+    glPushMatrix();
+    glColor3f(0.9f, 0.9f, 0.9f);
+    glTranslatef(0.0f, 1.0f, 0.125f);
+    desenhaChao();
+    glPopMatrix();
+
+
+    //Desenha parede entre as torres direita e esquerda - frente
+    //Direita frente desenhaTorre(pObj, 1.5f, 0.0f, 1.0f);
+    //Esquerda frente desenhaTorre(pObj, -1.5f, 0.0f, 1.0f);
+    glPushMatrix();
+    glTranslatef(0.0, 0.0, 0.5f);
+    glColor3f(1.0f, 0.0f, 0.0f);
+    glScalef(3.0f, 0.125f, 0.6f);
+    glutSolidCube(1.0f);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(0.0, 0.0, 0.9f);
+    glColor3f(0.0f, 1.0f, 0.0f);
+    glScalef(3.0f, 0.250f, 0.2f);
+    glutSolidCube(1.0f);
+    glPopMatrix();
+
+
+
+    //Desenha parede entre as torres direita e esquerda - atras
+    //Direita atras desenhaTorre(pObj, 1.5f, 2.0f, 1.0f);
+    //Esquerda atras desenhaTorre(pObj, -1.5f, 2.0f, 1.0f);
+    glPushMatrix();
+    glTranslatef(0.0, 3.0, 0.5f);
+    glColor3f(1.0f, 0.0f, 0.0f);
+    glScalef(3.0f, 0.125f, 0.6f);
+    glutSolidCube(1.0f);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(0.0, 3.0, 0.9f);
+    glColor3f(0.0f, 1.0f, 0.0f);
+    glScalef(3.0f, 0.250f, 0.2f);
+    glutSolidCube(1.0f);
+    glPopMatrix();
+
+
+    //Desenha parede entre as torres da direita
+    //Direita frente desenhaTorre(pObj, 1.5f, 0.0f, 1.0f);
+    //Direita atras desenhaTorre(pObj, 1.5f, 2.0f, 1.0f);
+    glPushMatrix();
+    glTranslatef(1.5, 1.5, 0.5f);
+    glColor3f(1.0f, 0.0f, 0.0f);
+    glScalef(0.125f, 3.0f, 0.6f);
+    glutSolidCube(1.0f);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(1.5, 1.5, 0.9f);
+    glColor3f(0.0f, 1.0f, 0.0f);
+    glScalef(0.250f, 3.0f, 0.2f);
+    glutSolidCube(1.0f);
+    glPopMatrix();
+
+
+
+    //Desenha parede entre as torres da esquerda
+    //Esquerda frente desenhaTorre(pObj, -1.5f, 0.0f, 1.0f);
+    //Esquerda atras desenhaTorre(pObj, -1.5f, 3.0f, 1.0f);
+    glPushMatrix();
+    glTranslatef(-1.5, 1.5, 0.5f);
+    glColor3f(1.0f, 0.0f, 0.0f);
+    glScalef(0.125f, 3.0f, 0.6f);
+    glutSolidCube(1.0f);
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(-1.5, 1.5, 0.9f);
+    glColor3f(0.0f, 1.0f, 0.0f);
+    glScalef(0.250f, 3.0f, 0.2f);
+    glutSolidCube(1.0f);
+    glPopMatrix();
+
+    glPopMatrix();
+
+    glPopMatrix();
+    // Buffer swap //chama o glFlush implicitamente 
+    glutSwapBuffers();  
+
+}    
+  
+  
+int main(int argc, char *argv[]){
+
+    glutInit(&argc, argv);  
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);  
+    glutInitWindowSize(800, 600);  
+    glutCreateWindow("Castelo - Quadricas");  
+    glutReshapeFunc(ChangeSize);  
+    glutSpecialFunc(SpecialKeys);
+
+    glutMouseFunc(Mouse);
+
+    glutDisplayFunc(RenderScene);  
+    SetupRC();  
+    glutMainLoop();  
+      
+    return 0; 
+
+} 
 
 
 void Mouse(int button, int state, int mouseX, int mouseY){
@@ -306,4 +259,21 @@ void Mouse(int button, int state, int mouseX, int mouseY){
         printf("Botao direito\n");
     }
     glutPostRedisplay();
+}
+
+void desenhaTorre(GLUquadricObj *quad, GLfloat x, GLfloat y, GLfloat z){
+
+    glTranslatef(x, y, z);
+
+    gluCylinder(quad, 0.3f, 0.0f, 0.5f, 26, 13);
+     
+    glTranslatef(0.0f, 0.0f, -0.8f);
+    gluCylinder(quad, 0.3f, 0.3f, 0.8f, 26, 13);
+
+}
+
+
+void desenhaChao(){
+    glScalef(5.0f, 4.0f, 0.125f);
+    glutSolidCube(1.0f);
 }
