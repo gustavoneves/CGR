@@ -1,6 +1,6 @@
 all: robo_humanoide
 
-tc2_CGR:
+robo_humanoide:
 	gcc -lGL -lGLU -lglut robo_humanoide.c -o robo_humanoide
 
 .PHONY: clean mrproper
