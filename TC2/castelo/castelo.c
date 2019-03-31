@@ -235,6 +235,7 @@ void RenderScene(void){
     glutSolidCube(1.0f);
     glPopMatrix();
 
+    //comeca telhado portao frente
     glPushMatrix();
     glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
     glTranslatef(0.0f, 1.6f, 0.1f);
@@ -261,6 +262,52 @@ void RenderScene(void){
       glVertex3f( 0.0f, 0.05f, 0.0f);
       glVertex3f(-0.35f,-0.35f,-0.25f);
       glVertex3f(-0.35f,-0.35f, 0.25f);
+    glEnd();
+    glPopMatrix();
+    //termina telhado portao frente
+
+    //Torre central
+    glPushMatrix();
+    //glTranslatef(0.0, 1.5f, 0.7f);
+    glTranslatef(0.0, 1.5f, 1.0f);
+    glColor3f(0.0f, 1.0f, 1.0f);
+    //glScalef(0.7f, 0.5f, 1.1f);
+    glScalef(0.9f, 0.7f, 1.4f);
+    glutSolidCube(1.0f);
+    glPopMatrix();
+
+    //telhado torre central
+    glPushMatrix();
+    glTranslatef(0.0f, 1.5f, 2.4f);
+    glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
+    glBegin(GL_TRIANGLES);    
+      glColor3f(0.0f, 0.0f, 0.5f);
+      // triangulo direita
+      glVertex3f(0.5f, 0.05f, 0.0f);
+      glVertex3f(0.5f, -0.5f, 0.5f);
+      glVertex3f(0.5f, -0.5f, -0.5f);
+
+       // triangulo esquerda
+      glVertex3f(-0.5f, 0.05f, 0.0f);
+      glVertex3f(-0.5f,-0.5f,-0.5f);
+      glVertex3f(-0.5f,-0.5f, 0.5f);
+    glEnd();
+
+    glColor3f(0.0f, 0.5f, 0.5f);
+    glRotatef(60.0f, 1.0f, 0.0f, 0.0f);
+    glTranslatef(0.0f, 0.0f, 1.0f);
+    glBegin(GL_QUADS);
+        /*
+        glVertex3f(0.5f, -0.5f, 0.5f);
+        glVertex3f(0.5f, -0.5f, -0.5f);
+        glVertex3f(-0.5f,-0.5f,-0.5f);
+        glVertex3f(-0.5f,-0.5f, 0.5f);
+        */
+
+        glVertex3f(0.5f, -0.5f, 0.25f);
+        glVertex3f(0.5f, -0.5f, -0.25f);
+        glVertex3f(-0.5f, -0.5f,-0.25f);
+        glVertex3f(-0.5f, -0.5f, 0.25f);
     glEnd();
     glPopMatrix();
 
