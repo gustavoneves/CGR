@@ -268,46 +268,38 @@ void RenderScene(void){
 
     //Torre central
     glPushMatrix();
-    //glTranslatef(0.0, 1.5f, 0.7f);
     glTranslatef(0.0, 1.5f, 1.0f);
     glColor3f(0.0f, 1.0f, 1.0f);
-    //glScalef(0.7f, 0.5f, 1.1f);
     glScalef(0.9f, 0.7f, 1.4f);
     glutSolidCube(1.0f);
     glPopMatrix();
 
     //telhado torre central
     glPushMatrix();
-    glTranslatef(0.0f, 1.5f, 2.4f);
+    glTranslatef(0.0f, 1.5f, 2.05f);
     glRotatef(90.0f, 1.0f, 0.0f, 0.0f);
+
     glBegin(GL_TRIANGLES);    
-      glColor3f(0.0f, 0.0f, 0.5f);
+      glColor3f(0.5f, 0.0f, 0.0f);
+      // triangulo frente
+      glVertex3f( 0.0f, 0.05f, 0.0f);
+      glVertex3f(-0.45f, -0.35f, 0.38f);
+      glVertex3f(0.45f, -0.35f, 0.38f);
+
       // triangulo direita
-      glVertex3f(0.5f, 0.05f, 0.0f);
-      glVertex3f(0.5f, -0.5f, 0.5f);
-      glVertex3f(0.5f, -0.5f, -0.5f);
+      glVertex3f( 0.0f, 0.05f, 0.0f);
+      glVertex3f(0.45f, -0.35f, 0.38f);
+      glVertex3f(0.45f, -0.35f, -0.38f);
 
-       // triangulo esquerda
-      glVertex3f(-0.5f, 0.05f, 0.0f);
-      glVertex3f(-0.5f,-0.5f,-0.5f);
-      glVertex3f(-0.5f,-0.5f, 0.5f);
-    glEnd();
+      // triangulo atras
+      glVertex3f( 0.0f, 0.05f, 0.0f);
+      glVertex3f(0.45f, -0.35f, -0.38f);
+      glVertex3f(-0.45f, -0.35f, -0.38f);
 
-    glColor3f(0.0f, 0.5f, 0.5f);
-    glRotatef(60.0f, 1.0f, 0.0f, 0.0f);
-    glTranslatef(0.0f, 0.0f, 1.0f);
-    glBegin(GL_QUADS);
-        /*
-        glVertex3f(0.5f, -0.5f, 0.5f);
-        glVertex3f(0.5f, -0.5f, -0.5f);
-        glVertex3f(-0.5f,-0.5f,-0.5f);
-        glVertex3f(-0.5f,-0.5f, 0.5f);
-        */
-
-        glVertex3f(0.5f, -0.5f, 0.25f);
-        glVertex3f(0.5f, -0.5f, -0.25f);
-        glVertex3f(-0.5f, -0.5f,-0.25f);
-        glVertex3f(-0.5f, -0.5f, 0.25f);
+      // triangulo esquerda
+      glVertex3f( 0.0f, 0.05f, 0.0f);
+      glVertex3f(-0.45f,-0.35f,-0.38f);
+      glVertex3f(-0.45f,-0.35f, 0.38f);
     glEnd();
     glPopMatrix();
 
