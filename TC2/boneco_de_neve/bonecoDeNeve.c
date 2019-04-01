@@ -11,12 +11,16 @@ GLfloat nariz_R = 1.0f;
 GLfloat nariz_G = 0.3f;
 GLfloat nariz_B = 0.3f;
 
+int tempo;
+float velocidade = 2.0f;
 
 void desenhaBoca(GLUquadricObj *quad);
 
 void Mouse(int button, int state, int mouseX, int mouseY);
 
 void botoesRoupa(GLUquadricObj *quad);
+
+void animacao(int v);
 
 // Change viewing volume and viewport.  Called when window is resized  
 void ChangeSize(int w, int h){  
@@ -108,30 +112,30 @@ void RenderScene(void){
     // Limpa a janela e o buffer 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);  
   
-    // Sava matriz de estado e rotacoes
+    // Salva matriz de estado e rotacoes
     glPushMatrix();  
 
-	// Move object back and do in place rotation  
+	// Move o objeto para tras e faz a rotacao no lugar
 	glTranslatef(0.0f, -1.0f, -5.0f);  
 	glRotatef(xRot, 1.0f, 0.0f, 0.0f);  
 	glRotatef(yRot, 0.0f, 1.0f, 0.0f);  
 
-	// Draw something  
+	// Incializa a quadrica 
 	pObj = gluNewQuadric();  
 	gluQuadricNormals(pObj, GLU_SMOOTH);  
 
-	// Main Body  
+	// corpo do boneco
 	glPushMatrix();  
 	glColor3f(1.0f, 1.0f, 1.0f);  
-	gluSphere(pObj, .40f, 26, 13);  // Bottom  
+	gluSphere(pObj, .40f, 26, 13);  // Esfera de baixo 
 
-	glTranslatef(0.0f, .550f, 0.0f); // Mid section  
+	glTranslatef(0.0f, .550f, 0.0f); // esfera do centro 
 	gluSphere(pObj, .3f, 26, 13);  
 
-	glTranslatef(0.0f, 0.45f, 0.0f); // Head  
+	glTranslatef(0.0f, 0.45f, 0.0f); // Esfera de cima
 	gluSphere(pObj, 0.24f, 26, 13);  
 
-	// Eyes  
+	// Olhos
 	glColor3f(0.0f, 0.0f, 0.0f);  
 	glTranslatef(0.1f, 0.1f, 0.21f);  
 	gluSphere(pObj, 0.02f, 26, 13);  
@@ -139,10 +143,14 @@ void RenderScene(void){
 	glTranslatef(-0.2f, 0.0f, 0.0f);  
 	gluSphere(pObj, 0.02f, 26, 13);  
 
-	// Nose  
-	//glColor3f(1.0f, 0.3f, 0.3f);
-    glColor3f(nariz_R, nariz_G, nariz_B);  
-	glTranslatef(0.1f, -0.12f, 0.0f);  
+	// Nariz
+    if(tempo > 3){ //faz o nariz piscar
+        glColor3f(nariz_R, nariz_G, nariz_B); //alaranjado
+    }
+    else{
+        glColor3f(1.0f, 1.0f, 1.0f); //branco
+    }  
+	glTranslatef(0.1f, -0.12f, 0.0f); 
 	gluCylinder(pObj, 0.04f, 0.0f, 0.3f, 26, 13); 
 
     //Boca
@@ -152,14 +160,14 @@ void RenderScene(void){
 
     glPopMatrix();
 
-	// Hat  
+	// Chapeu 
 	glPushMatrix();  
 	glColor3f(0.0f, 0.0f, 0.0f);  
 	glTranslatef(0.0f, 1.17f, 0.0f);  
 	glRotatef(-90.0f, 1.0f, 0.0f, 0.0f);  
 	gluCylinder(pObj, 0.17f, 0.17f, 0.4f, 26, 13);  
 
-	// Hat brim  
+	// Base do chapeu 
 	glDisable(GL_CULL_FACE);  
 	gluDisk(pObj, 0.17f, 0.28f, 26, 13);  
 	glEnable(GL_CULL_FACE);  
@@ -168,7 +176,6 @@ void RenderScene(void){
 	gluDisk(pObj, 0.0f, 0.17f, 26, 13);  
 	glPopMatrix();  
 
-    // Restore the matrix state  
     glPopMatrix();  
   
     // Buffer swap //chama o glFlush implicitamente 
@@ -189,7 +196,8 @@ int main(int argc, char *argv[]){
     glutMouseFunc(Mouse);
 
     glutDisplayFunc(RenderScene);  
-    SetupRC();  
+    SetupRC();
+    glutTimerFunc(10, animacao, 0);  //chamo a funcao 10 vezes
     glutMainLoop();  
       
     return 0; 
@@ -254,4 +262,14 @@ void botoesRoupa(GLUquadricObj *quad){
     glTranslatef(0.0f, -0.25f, 0.12f);
     gluSphere(quad, 0.04f, 26, 13); 
 
+}
+
+void animacao(int v){
+    // https://community.khronos.org/t/gluttimerfunc/24407/2
+    tempo++;
+    if(tempo >= 30){
+        tempo = 0;
+    }
+    glutTimerFunc(velocidade, animacao, 0); // velocidade e' frequencia qu quero chamar animacao
+    glutPostRedisplay();
 }
