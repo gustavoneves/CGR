@@ -12,9 +12,15 @@ static GLfloat yRotBracoEsq = 0.0f;
 
 static GLfloat cabecaReverencia = 0.0f;
 
+static GLfloat cabecaExorcista = 5.0f;
+
 int tempo;
 float velocidade = 0.1f;
+
+int ex = 0;
 void Mouse(int button, int state, int mouseX, int mouseY);
+
+void animacao(int v);
 
 // Change viewing volume and viewport.  Called when window is resized  
 void ChangeSize(int w, int h){  
@@ -118,10 +124,7 @@ void TeclasPressionadas(unsigned char tecla, int x, int y){
     }
 
     if(tecla == 'e'){
-        GLfloat i;
-        for(i=0.0f; i<360.0f; i+=0.1f){
-
-        }
+        ex = 1;
     }
 
     yRotBracoDir = (GLfloat)((const int)yRotBracoDir % 45);  
@@ -152,6 +155,12 @@ void RenderScene(void){
 
     //cabeca
     glPushMatrix();
+
+    if(ex){
+        if(tempo > 3){
+             glRotatef(cabecaExorcista, 0.0f, 0.0f, 1.0f);
+        }
+    }
     glRotatef(cabecaReverencia, 1.0f, 0.0f, 0.0f);
     glTranslatef(0.0f, 0.0f, 1.0f);
     glScalef(0.5f, 0.5f, 0.5f);
@@ -208,7 +217,8 @@ int main(int argc, char *argv[]){
 
     glutDisplayFunc(RenderScene);
     glutKeyboardFunc(TeclasPressionadas);  
-    SetupRC();  
+    SetupRC();
+    glutTimerFunc(10, animacao, 0);  //chamo a funcao 10 vezes  
     glutMainLoop();  
       
     return 0; 
@@ -224,6 +234,7 @@ void Mouse(int button, int state, int mouseX, int mouseY){
     }
     else if(button == GLUT_MIDDLE_BUTTON) {
         printf("Botao meio\n");
+        ex = 0;
     }
 
     else if(button == GLUT_RIGHT_BUTTON) {
@@ -237,10 +248,12 @@ void Mouse(int button, int state, int mouseX, int mouseY){
 }
 
 void animacao(int v){
-    glutTimerFunc(velocidade, animacao, 0);
+     // https://community.khronos.org/t/gluttimerfunc/24407/2
     tempo++;
-    if(tempo >= 10){
+    cabecaExorcista += 1.0f;
+    if(tempo >= 30){
         tempo = 0;
     }
+    glutTimerFunc(velocidade, animacao, 0); // velocidade e' frequencia qu quero chamar animacao
     glutPostRedisplay();
 }
