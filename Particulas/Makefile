@@ -1,12 +1,12 @@
-all: bonecoDeNeve
+all: Neve
 
-bonecoDeNeve: bonecoDeNeve.c
-	gcc -lGL -lGLU -lm -lglut bonecoDeNeve.c -o bonecoDeNeve
+Neve: neve.c
+	gcc -lGL -lGLU -lm -lglut neve.c -o neve
 	
 .PHONY: clean mrproper
 
 clear: 
-	rm -f bonecoDeNeve
+	rm -f neve
 
 mrproper: clear
-	rm  -f bonecoDeNeve
+	rm  -f neve
