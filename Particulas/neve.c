@@ -6,7 +6,6 @@
 
 #define ESCAPE 27
 #define NUM_PARTICULAS 3000
-//#define GRAVIDADE 0.0004
 
 float gravidade = 0.0004;
 
@@ -133,7 +132,6 @@ void DesenhaCena()
   for(i=0;i<NUM_PARTICULAS;i++) {
     if(particulas[i].tempoDeVida) {
       particulasAtivas++;
-      //particulas[i].veloc_y -= GRAVIDADE;
       particulas[i].veloc_y -= gravidade;
       particulas[i].x += particulas[i].veloc_x;
       particulas[i].y += particulas[i].veloc_y;
