@@ -5,10 +5,10 @@
 static GLfloat xRot = 0.0f;  
 static GLfloat yRot = 0.0f;
 
+static GLfloat rotate_x = 0.5f;
 
 double x[11] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 double y[11] = {0.00000, 0.84147, 0.90930, 0.14112, -0.75680, -0.95892, -0.27942, 0.65699, 0.98936, 0.41212, -0.54402};
-
 
 //void desenhaTorre(GLUquadricObj *quad, GLfloat x, GLfloat y, GLfloat z);
 
@@ -114,8 +114,9 @@ void RenderScene(void){
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);  
   
     // Sava matriz de estado e rotacoes
-    glPushMatrix();  
-
+    glPushMatrix();
+    glScalef(rotate_x,rotate_x,1.0f );
+    glTranslatef(-3.0f, 0.0f, 0.0f);
 	// Move object back and do in place rotation  
 	glTranslatef(0.0f, -1.0f, -5.0f); 
 	glRotatef(xRot, 1.0f, 0.0f, 0.0f);  
@@ -128,7 +129,7 @@ void RenderScene(void){
     //glRotatef(-90.0f, 1.0f, 0.0f, 0.0f); // Z crescendo para cima da tela
 
     double a;
-    for(a=x[0]; a<=x[10]; a+=0.1){
+    for(a=x[0]; a<=x[10]; a+=0.001){
         //printf("x: %f     y:%f\n", a, lagrange(x, y, a, 11));
         glPushMatrix();
             glTranslatef((GLfloat)a, (GLfloat)lagrange(x, y, a, 11), 0.0f);
@@ -136,7 +137,6 @@ void RenderScene(void){
             glScalef(0.5f, 0.5f, 0.6f);
             glutSolidCube(0.3f);
         glPopMatrix();
-
     }
 
     //glPopMatrix();
@@ -173,7 +173,6 @@ int main(int argc, char *argv[]){
     glutSpecialFunc(SpecialKeys);
 
     glutMouseFunc(Mouse);
-
     glutDisplayFunc(RenderScene);  
     SetupRC();
     glutMainLoop();  
@@ -187,6 +186,7 @@ void Mouse(int button, int state, int mouseX, int mouseY){
     GLint hit;
     if (button == GLUT_LEFT_BUTTON) {
         printf("Botao esquerdo\n");
+        rotate_x += 0.5f;
     }
     else if(button == GLUT_MIDDLE_BUTTON) {
         printf("Botao meio\n");
@@ -194,6 +194,9 @@ void Mouse(int button, int state, int mouseX, int mouseY){
 
     else if(button == GLUT_RIGHT_BUTTON) {
         printf("Botao direito\n");
+        if(rotate_x > 1.0f){
+            rotate_x -= 0.5f;
+        }
     }
     glutPostRedisplay();
 }
