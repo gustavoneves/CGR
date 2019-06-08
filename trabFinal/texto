@@ -1,0 +1,38 @@
+Motivação
+
+Porque utilizar Interpolação polinomial?
+Os polinomios são fácilmente computáveis, suas derivadas e integrais também são polinomios e 
+suas raizes podem ser encontradas com relativa facilidade.
+Portanto é vantajoso substituir uma função complicada por um polinomio que a represente.
+
+
+
+Teorema de Weierstrass:
+    "Toda função contínua pode ser abitrariamente aproximada por um polinomio"
+
+
+
+Quando usar como a aproximação para uma função f(x)?
+
+    a) Quando não se conhece a expressão analitica de f(x), ou seja, sabemos apenas seu valor
+        em alguns pontos(ex. dados experimentais) e necessitamos por exemplo descobrir seu valor em algum ponto
+        ou sua integral em um determinado intervalo
+    b) Quando f(x) é extremamente complicada e de dificil trabalho, sendo assim é interessante sacrificar a precissão
+        em beneficio da simplificação dos calculos
+
+
+
+Definição da Interpolação por meio de polinomios
+    Chama-se polinomio de Interpolação de uma função y=f(x) sobre um conjunto de pontos distintos x0, x1, ..., xn
+    ao polinomio de grau no maximo n que coincide com f(x) em x0, x1, ..., xn.
+    Tal polinomio de designado por Pn(f; x), para maior clareza Pn(x)
+
+
+Função escolhida:
+    sen(x)
+
+Tabela de valores:
+      x  |    0         1         2          3        4         5         6          7        8         9        10
+    f(x) | 0.00000   0.84147   0.90930   0.14112  -0.75680  -0.95892  -0.27942   0.65699   0.98936   0.41212  -0.54402
+
+
