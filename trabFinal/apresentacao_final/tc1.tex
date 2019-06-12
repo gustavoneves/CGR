@@ -1,0 +1,154 @@
+\documentclass{beamer}
+
+\usepackage[brazil]{babel}
+\usepackage[utf8]{inputenc} 
+
+\usepackage{amsmath}
+\usepackage{multirow}
+
+    \makeatletter
+    \def\verbatim{\tiny\@verbatim \frenchspacing\@vobeyspaces \@xverbatim}
+    \makeatother
+       
+    \pgfdeclareimage[height=1.2cm]{logo}{./imagens/logoUdescFinal}
+    \logo{\pgfuseimage{logo}}
+    
+    \pgfdeclareimage[height=6cm]{duvidas}{./imagens/ponto1}
+
+    \pgfdeclareimage[height=5cm]{resultado}{./imagens/resultado}
+
+    \usetheme{Berkeley}
+
+  
+%%% Numerar slides
+%%% Ref: https://tex.stackexchange.com/a/145899
+%%% https://tex.stackexchange.com/questions/145829/slide-number-in-beamer-berkeley-header
+\makeatletter
+\setbeamertemplate{frametitle}{%
+    \nointerlineskip%
+    \vskip-\beamer@headheight%
+    \vbox to \beamer@headheight{%
+      \vfil
+      \leftskip=-\beamer@leftmargin%
+      \advance\leftskip by0.3cm%
+      \rightskip=-\beamer@rightmargin%
+      \advance\rightskip by0.3cm plus1fil%
+      {\usebeamercolor[fg]{frametitle}
+          \usebeamerfont{frametitle}\insertframetitle\hfill\insertframenumber\par}% added number
+      {\usebeamercolor[fg]{framesubtitle}
+           \usebeamerfont{framesubtitle}\insertframesubtitle\par}%
+      \vbox{}%
+      \vskip-1em%
+      \vfil
+    }%
+  }
+\makeatother
+
+    
+    \title{Sweeping}
+    \author{Gustavo José Neves da Silva}
+
+    \date{}
+    
+    
+    \begin{document}
+    
+    \begin{frame}
+      \titlepage
+    \end{frame}
+    
+\section{Base}
+
+\begin{frame}
+  \frametitle{Teorema de Weierstrass}
+    "Toda função contínua pode ser abitrariamente aproximada por um polinômio"
+\end{frame}
+
+\begin{frame}
+  \frametitle{Interpolação}
+  Polinômio de grau no máximo $n$ que coincide com $f(x)$ em $x_0, x_1, ..., x_n$.\\
+  Tal polinômio de designado por $P_n(f; x)$, para maior clareza $P_n(x)$
+\end{frame}
+
+\begin{frame}
+  \frametitle{Quando utilizar}
+   \begin{itemize}
+     \item Quando não se conhece a expressão analítica da função e sim apenas o seu valor em alguns pontos
+     \item Quando a função é extremamente complexa e de difícil trabalho
+   \end{itemize}
+\end{frame}
+
+
+\begin{frame}
+  \frametitle{Polinômios de Lagrange}
+  \begin{center}
+  \begin{equation} 
+      L_i(x) = \displaystyle\prod_{\substack{
+        k = 0 \\
+        k \neq i
+        }}^n
+        \frac{x - x_k}{x_i - x_k}, 0 \leq i \leq n
+   \end{equation}
+   \begin{equation}
+    P_n(x) = \displaystyle\sum_{i=0}^{n}L_i(x)f(x_i)
+   \end{equation}
+
+   \end{center}
+\end{frame}
+
+\section{Trabalho}
+\begin{frame}
+  \frametitle{Função utilizada}
+  \begin{center}
+    $f(x)=sen(x), 0 \leq x \leq 10$
+  \end{center}
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Dados base}
+\begin{table}[]
+  \begin{tabular}{|c|c|l|c|c|}
+  \cline{1-2} \cline{4-5}
+  f(x)                   & x &  & f(x)                          & x                       \\ \cline{1-2} \cline{4-5} 
+  0.00000                & 0 &  & -0.95892                      & 5                       \\ \cline{1-2} \cline{4-5} 
+  0.84147                & 1 &  & -0.27942                      & 6                       \\ \cline{1-2} \cline{4-5} 
+  0.90930                & 2 &  & 0.65699                       & 7                       \\ \cline{1-2} \cline{4-5} 
+  0.14112                & 3 &  & 0.98936                       & 8                       \\ \cline{1-2} \cline{4-5} 
+  -0.75680               & 4 &  & 0.41212                       & 9                       \\ \cline{1-2} \cline{4-5} 
+  \multicolumn{1}{|l|}{} &   &  & \multicolumn{1}{l|}{-0.54402} & \multicolumn{1}{l|}{10} \\ \cline{1-2} \cline{4-5} 
+  \end{tabular}
+  \end{table}
+
+  \end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{Resultados}
+    \begin{center}
+      \pgfuseimage{resultado}
+  \end{center}
+\end{frame}
+
+\section{Referências}
+\begin{frame}[fragile]
+    \frametitle{Referências}
+    \begin{footnotesize}
+        \begin{verbatim}
+          Numerical Analysis, 9 edition, Richard L. Burden, J. Douglas Faires
+          Numerical Mathematics and Computing, 7 edition, Ward Cheney, David Kincaid
+        \end{verbatim}
+    \end{footnotesize}
+\end{frame}
+    
+    
+\section{Dúvidas}
+\begin{frame}[fragile]
+    \frametitle{Perguntas}
+        \begin{center}
+            \pgfuseimage{duvidas}
+        \end{center}
+
+\end{frame}
+    
+\end{document}
+    
